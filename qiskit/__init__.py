@@ -19,6 +19,7 @@
 
 import pkgutil
 import warnings
+import os
 
 # First, check for required Python and API version
 from . import util
@@ -58,10 +59,11 @@ except ImportError:
 try:
     from qiskit.providers.ibmq import IBMQ
 except ImportError:
-    warnings.warn('Could not import the IBMQ provider from the '
-                  'qiskit-ibmq-provider package. Install qiskit-ibmq-provider '
-                  'or check your installation.',
-                  RuntimeWarning)
+    if os.environ.get('QISKIT_SUPPRESS_AER_WARNINGS') is not 'Y':
+        warnings.warn('Could not import the IBMQ provider from the '
+                      'qiskit-ibmq-provider package. Install qiskit-ibmq-provider '
+                      'or check your installation.',
+                      RuntimeWarning)
 
 from .version import __version__
 from .version import _get_qiskit_versions
